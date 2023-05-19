@@ -62,6 +62,34 @@ async function run() {
       res.send(result);
     });
 
+    // Toy Routes Update in the single data
+    app.put("/toy/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedToy = req.body;
+      const updatedToyData = {
+        $set: {
+          sellerName: updatedToy.sellerName,
+          sellerEmail: updatedToy.sellerEmail,
+          ToyName: updatedToy.ToyName,
+          price: updatedToy.price,
+          category: updatedToy.category,
+          quantity: updatedToy.quantity,
+          rating: updatedToy.rating,
+          available: updatedToy.available,
+          image: updatedToy.image,
+          details: updatedToy.details,
+        },
+      };
+      const result = await toyPuzzlesCollection.updateOne(
+        filter,
+        updatedToyData,
+        options
+      );
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
