@@ -29,7 +29,7 @@ async function run() {
       .db("ToyPuzzles")
       .collection("toyCollection");
 
-    // Toy Routes
+    // Toy Routes get in the all specific data of email
     app.get("/toys", async (req, res) => {
       let query = {};
       if (req?.query?.email) {
@@ -39,6 +39,7 @@ async function run() {
       res.send(result);
     });
 
+    // Toy Routes get in the single data
     app.get("/toy/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
@@ -46,9 +47,18 @@ async function run() {
       res.send(result);
     });
 
+    // Toy Routes post in the data
     app.post("/toys", async (req, res) => {
       const toys = req.body;
       const result = await toyPuzzlesCollection.insertOne(toys);
+      res.send(result);
+    });
+
+    // Toy Routes Delete in the single data
+    app.delete("/toy/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toyPuzzlesCollection.deleteOne(query);
       res.send(result);
     });
 
