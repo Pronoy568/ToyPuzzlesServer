@@ -31,8 +31,11 @@ async function run() {
 
     // Toy Routes
     app.get("/toys", async (req, res) => {
-      const cursor = toyPuzzlesCollection.find();
-      const result = await cursor.toArray();
+      let query = {};
+      if (req?.query?.email) {
+        query = { sellerEmail: req.query.email };
+      }
+      const result = await toyPuzzlesCollection.find(query).toArray();
       res.send(result);
     });
 
@@ -40,16 +43,6 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await toyPuzzlesCollection.findOne(query);
-      res.send(result);
-    });
-
-    app.get("/toys", async (req, res) => {
-      let query = {};
-
-      if (req.query?.email) {
-        query = { email: req.query.email };
-      }
-      const result = await toyPuzzlesCollection.find(query).toArray();
       res.send(result);
     });
 
