@@ -43,6 +43,16 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/toys", async (req, res) => {
+      let query = {};
+
+      if (req.query?.email) {
+        query = { email: req.query.email };
+      }
+      const result = await toyPuzzlesCollection.find(query).toArray();
+      res.send(result);
+    });
+
     app.post("/toys", async (req, res) => {
       const toys = req.body;
       const result = await toyPuzzlesCollection.insertOne(toys);
